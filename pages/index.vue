@@ -3,23 +3,16 @@
     <section class="intro">
       <h1>Get the latest tech news</h1>
     </section>
-    <section class="feutured-post">
-      <PostPreview
-        id="1"
-        title="this is the title"
-        thumbnail="https://wp.technologyreview.com/wp-content/uploads/2022/07/government-tech-insider.png"
-        previewText="this is my first post!"
-      />
-    </section>
+    <PostList />
   </div>
 </template>
 
 <script>
-import PostPreview from "@/components/Posts/PostPreview";
+import PostList from "@/components/Posts/PostList";
 export default {
   name: "IndexPage",
   components: {
-    PostPreview,
+    PostList,
   },
 };
 </script>
@@ -30,6 +23,7 @@ export default {
   position: relative;
   padding: 30px;
   box-sizing: border-box;
+  background-image: url("~assets/images/main-page-background.jpg");
   background-position: center;
   background-size: cover;
 }
@@ -53,14 +47,5 @@ export default {
   .intro h1 {
     font-size: 2rem;
   }
-}
-
-.featured-posts {
-  display: flex;
-  padding: 20px;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
 }
 </style>
