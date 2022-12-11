@@ -1,11 +1,13 @@
 <template>
   <section class="post-list">
     <PostPreview
-      id="1"
+      v-for="item in posts"
+      :key="item.id"
+      :id="item.id"
       :is-admin="isAdmin"
-      title="this is the title"
-      thumbnail="https://wp.technologyreview.com/wp-content/uploads/2022/07/government-tech-insider.png"
-      previewText="this is my first post!"
+      :title="item.title"
+      :thumbnail="item.thumbnail"
+      :previewText="item.previewText"
     />
   </section>
 </template>
@@ -13,6 +15,7 @@
 <script>
 import PostPreview from "@/components/Posts/PostPreview";
 export default {
+  name: "PostList",
   components: {
     PostPreview,
   },
@@ -20,6 +23,10 @@ export default {
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    posts: {
+      type: Array,
+      required: true,
     },
   },
 };
