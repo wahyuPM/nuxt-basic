@@ -20,22 +20,21 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  asyncData(context, callback) {
-    setTimeout(() => {
-      callback(null, {
-        loadedPosts: {
-          id: "1",
-          title: "First Post (ID: " + context.params.id + ")",
-          previewText: "this is our first post",
-          author: "Dummy Data",
-          updatedDate: new Date(),
-          content: "Some dummy text which is definitely not the preview text",
-          thumbnail:
-            "https://wp.technologyreview.com/wp-content/uploads/2022/07/government-tech-insider.png",
-        },
-      });
-    }, 1000);
+  async asyncData(context) {
+    try {
+      const res = await axios.get(
+        "https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app/posts/" +
+          context.params.id +
+          ".json"
+      );
+      return {
+        loadedPosts: res.data,
+      };
+    } catch (e) {
+      return console.log(e);
+    }
   },
 };
 </script>

@@ -16,13 +16,9 @@ export default {
   },
   methods: {
     onSubmitted(postData) {
-      this.$axios
-        .$post(
-          "https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json",
-          postData
-        )
-        .then((result) => console.log(result))
-        .catch((e) => console.log(e));
+      this.$store.dispatch("addPost", postData).then(() => {
+        this.$router.push("/admin");
+      });
     },
   },
 };
