@@ -13,7 +13,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {rel: 'stylesheet', href: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"}
+      { rel: 'stylesheet', href: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"}
     ]
   },
 
@@ -50,5 +50,18 @@ export default {
         autoprefixer: {},
       },
     },
+  },
+   loading: {
+    color: '#41b883',
+    height: '8px',
+    continuous: true,
+    duration: 5000
+  },
+  env: {
+    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app'
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   }
 }
