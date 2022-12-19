@@ -24,6 +24,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~plugins/core-components.js',
+    '~plugins/date-filter.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -61,7 +63,10 @@ export default {
     baseUrl: process.env.BASE_URL || 'https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app'
   },
   transition: {
-    name: 'fade',
+    name: 'fade', // class name
     mode: 'out-in'
-  }
+  },
+  // router: {
+  //   middleware: 'log'
+  // }
 }

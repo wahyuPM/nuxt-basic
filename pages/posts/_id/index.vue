@@ -4,7 +4,7 @@
       <h1 class="post-title">{{ loadedPosts.title }}</h1>
       <div class="post-details">
         <div class="post-detail">
-          Last updated on {{ loadedPosts.updatedDate }}
+          Last updated on {{ loadedPosts.updatedDate | date }}
         </div>
         <div class="post-detail">Written by {{ loadedPosts.author }}</div>
       </div>
