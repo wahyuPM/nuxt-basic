@@ -60,7 +60,8 @@ export default {
     duration: 5000
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app'
+    baseUrl: process.env.BASE_URL || 'https://nuxt-blog-82d62-default-rtdb.asia-southeast1.firebasedatabase.app',
+    fbAPIKey: 'AIzaSyCPspMXZcNKdE7MjuAOzO2alA8LludSN-U'
   },
   transition: {
     name: 'fade', // class name

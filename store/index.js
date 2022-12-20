@@ -4,7 +4,8 @@ import axios from 'axios'
 const createStore = () => {
     return new Vuex.Store({
         state: {
-            loadedPosts: []
+            loadedPosts: [],
+            token: null
         },
         mutations: {
             setPosts(state, posts) {
@@ -17,6 +18,9 @@ const createStore = () => {
                 const postIndex = state.loadedPosts.findIndex(post => post.id === editedPost.id) 
 
                 state.loadedPosts[postIndex] = editedPost
+            },
+            setToken(state, token){
+                state.token = token
             }
         },
         actions: {
@@ -31,23 +35,24 @@ const createStore = () => {
                })
                .catch(e => console.log(e))
             },
-            addPost(vuexContext, post){
+            async addPost(vuexContext, post){
                 const createdPost =  { ...post, updatedDate: new Date() }
-                return  axios.post(
-                    process.env.baseUrl + "/posts.json",
-                       createdPost
-                        )
-                    .then((res) => {
-                        vuexContext.commit('addPost', {...createdPost, id: res.data.name })
-                    })
-                    .catch((e) => console.log(e));
+                try {
+                    const res = await axios.post(
+                        process.env.baseUrl + "/posts.json?auth=" + vuexContext.state.token,
+                        createdPost
+                    )
+                    vuexContext.commit('addPost', { ...createdPost, id: res.data.name })
+                } catch (e) {
+                    return console.log(e)
+                }
             },
             async editPost(vuexContext, editedPost){
                 try {
                     const res = await axios.put(
                     process.env.baseUrl + "/posts/" +
                         editedPost.id +
-                        ".json",
+                        ".json?auth=" + vuexContext.state.token,
                     editedPost
                     );
                     if (res) {
@@ -59,6 +64,28 @@ const createStore = () => {
             },
             setPosts(vuexContext, posts){
                 vuexContext.commit('setPosts', posts)
+            },
+            async authenticateUser(vuexContext, authData){
+                let authUrl =
+                    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
+                    process.env.fbAPIKey;
+                if (!authData.isLogin) {
+                    authUrl =
+                    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" +
+                    process.env.fbAPIKey;
+                }
+
+               try {
+                    const result = await this.$axios
+                        .$post(authUrl, {
+                            email: authData.email,
+                            password: authData.password,
+                            returnSecureToken: true,
+                        })
+                    vuexContext.commit('setToken', result.idToken)
+                } catch (error) {
+                    console.log(error)
+                }
             }
         },
         getters: {
