@@ -21,6 +21,9 @@ const createStore = () => {
             },
             setToken(state, token){
                 state.token = token
+            },
+            clearToken(state) {
+                state.token = null
             }
         },
         actions: {
@@ -83,9 +86,29 @@ const createStore = () => {
                             returnSecureToken: true,
                         })
                     vuexContext.commit('setToken', result.idToken)
+                    localStorage.setItem('token', result.idToken)
+                    localStorage.setItem('tokenExpiration', new Date().getTime() + result.expiresIn * 1000) //milisecond
+                    vuexContext.dispatch('setLogoutTimer', result.expiresIn * 1000)
                 } catch (error) {
                     console.log(error)
                 }
+            },
+            setLogoutTimer(vuexContext, duration){
+                setTimeout(() => {
+                    vuexContext.commit('clearToken')
+                }, duration);
+            },
+            initAuth(vuexContext){
+              const token =  localStorage.getItem('token')
+              const expirationDate = localStorage.getItem('tokenExpiration');
+            
+              //jika token belum expires atau tidak ada token
+              if (new Date().getTime() > +expirationDate || !token) {
+                return;
+              }
+
+              vuexContext.dispatch('setLogoutTimer', +expirationDate - new Date().getTime())
+              vuexContext.commit('setToken', token)
             }
         },
         getters: {
