@@ -35,7 +35,7 @@ const createStore = () => {
                 for (const key in res.data) {
                     postsArray.push({...res.data[key], id: key})
                 }
-                vuexContext.commit('setPosts', postsArray)
+                vuexContext.dispatch('setPosts', postsArray)
                })
                .catch(e => console.log(e))
             },
@@ -69,6 +69,7 @@ const createStore = () => {
             setPosts(vuexContext, posts){
                 vuexContext.commit('setPosts', posts)
             },
+            //login
             async authenticateUser(vuexContext, authData){
                 let authUrl =
                     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
@@ -97,7 +98,7 @@ const createStore = () => {
                     console.log(error)
                 }
             },
-          
+            //middleware
             initAuth(vuexContext, req){
                 let token
                 let expirationDate
@@ -122,11 +123,20 @@ const createStore = () => {
                 }
                  //jika token expires atau tidak ada token
                 if (new Date().getTime() > +expirationDate || !token) {
-                    vuexContext.commit('clearToken')
+                    vuexContext.dispatch('logout')
                     return;
                 }
             
                 vuexContext.commit('setToken', token)
+            },
+            logout(vuexContext){
+                vuexContext.commit('clearToken')
+                Cookies.remove('jwt')
+                Cookies.remove('expirationDate')
+                if (process.client) {
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('tokenExpiration')
+                }
             }
         },
         getters: {
